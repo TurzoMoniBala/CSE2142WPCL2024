@@ -63,9 +63,16 @@ public class EmployeeManager {
             try (
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
                 String line = reader.readLine();
-                String[] words = line.split("\\s+");  // split by spaces
-                System.out.println(words.length + " word(s) found.");
-            } catch (Exception e) {
+                if( line !=null && !line.trim().isEmpty()){
+
+                
+                String[] employeeNames = line.split("\\s+");  // split by spaces
+                System.out.println(employeeNames.length + " employeeNames(s) found.");
+            }
+            else{
+                System.out.println("no employees found");
+            }
+         } catch (Exception e) {
                 System.out.println("Error loading data.");
             }
         }

@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class EmployeeManager {
+    //cheack the argument count
     public static void main(String[] args) {
         // Check arguments
         if (args.length != 1) {
@@ -12,7 +13,7 @@ public class EmployeeManager {
         // Handling different operations
         String operation = args[0];
 
-        // Check for 'l' (loading employee data)
+        // Check for 'l' (loading employee data)//also check the file 
         if (operation.equals("l")) {
             System.out.println("Loading data ...");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
@@ -20,11 +21,12 @@ public class EmployeeManager {
                 for (String employee : line.split(",")) {
                     System.out.println(employee);
                 }
+                //if the file is not there then this block of code run
             } catch (Exception e) {
                 System.out.println("Error loading data.");
             }
         }
-        // Check for 's' (selecting a random employee)
+        // Check for 's' (selecting a random employee)//search the data
         else if (operation.equals("s")) {
             System.out.println("Loading data ...");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {

@@ -4,15 +4,18 @@ import java.util.*;
 public class EmployeeManager {
     public static void main(String[] args) {
         // Check arguments
-        //changing the argument for task 2
         if (args.length != 1) {
-            System.out.println("error: incorrect number");
+            System.out.println("Error: Incorrect number of arguments.");
             return;
         }
-        if (args[0].equals("l")) {
+        
+        // Handling different operations
+        String operation = args[0];
+
+        // Check for 'l' (loading employee data)
+        if (operation.equals("l")) {
             System.out.println("Loading data ...");
-            try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
                 String line = reader.readLine();
                 for (String employee : line.split(",")) {
                     System.out.println(employee);
@@ -21,10 +24,10 @@ public class EmployeeManager {
                 System.out.println("Error loading data.");
             }
         }
-        else if (args[0].equals("s")) {
+        // Check for 's' (selecting a random employee)
+        else if (operation.equals("s")) {
             System.out.println("Loading data ...");
-            try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
                 String line = reader.readLine();
                 String[] employeeNames = line.split(",");
                 Random randomGenerator = new Random();
@@ -33,22 +36,31 @@ public class EmployeeManager {
                 System.out.println("Error loading data.");
             }
         }
-        else if (args[0].contains("+")) {
+        // Check for '+' (adding an employee)
+        else if (operation.contains("+")) {
+            String employeeName = operation.substring(1);
+            if (employeeName.isEmpty()) {
+                System.out.println("Error: No employee name provided to add.");
+                return;
+            }
             System.out.println("Adding employee ...");
-            try (
-                BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt", true))) {
-                writer.write(", " + args[0].substring(1));
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt", true))) {
+                writer.write(", " + employeeName);
             } catch (Exception e) {
                 System.out.println("Error adding employee.");
             }
         }
-        else if (args[0].contains("?")) {
+        // Check for '?' (searching for an employee)
+        else if (operation.contains("?")) {
+            String searchEmployee = operation.substring(1);
+            if (searchEmployee.isEmpty()) {
+                System.out.println("Error: No employee name provided to search.");
+                return;
+            }
             System.out.println("Searching employee ...");
-            try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
                 String line = reader.readLine();
                 String[] employeeNames = line.split(",");
-                String searchEmployee = args[0].substring(1);
                 if (Arrays.asList(employeeNames).contains(searchEmployee)) {
                     System.out.println("Employee found");
                 } else {
@@ -58,61 +70,78 @@ public class EmployeeManager {
                 System.out.println("Error loading data.");
             }
         }
-        else if (args[0].contains("c")) {
+        // Check for 'c' (counting employees)
+        else if (operation.contains("c")) {
             System.out.println("Counting employees ...");
-            try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
                 String line = reader.readLine();
-                if( line !=null && !line.trim().isEmpty()){
-
-                
-                String[] employeeNames = line.split("\\s+");  // split by spaces
-                System.out.println(employeeNames.length + " employeeNames(s) found.");
-            }
-            else{
-                System.out.println("no employees found");
-            }
-         } catch (Exception e) {
+                if (line != null && !line.trim().isEmpty()) {
+                    String[] employeeNames = line.split("\\s+");  // split by spaces
+                    System.out.println(employeeNames.length + " employee(s) found.");
+                } else {
+                    System.out.println("No employees found");
+                }
+            } catch (Exception e) {
                 System.out.println("Error loading data.");
             }
         }
-        else if (args[0].contains("u")) {
+        // Check for 'u' (updating employee)
+        else if (operation.contains("u")) {
+            String updatedEmployee = operation.substring(1);
+            if (updatedEmployee.isEmpty()) {
+                System.out.println("Error: No employee name provided to update.");
+                return;
+            }
             System.out.println("Updating employee ...");
-            try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
                 String line = reader.readLine();
                 String[] employeeNames = line.split(",");
-                String updatedEmployee = args[0].substring(1);
+                boolean updated = false;
                 for (int i = 0; i < employeeNames.length; i++) {
                     if (employeeNames[i].equals(updatedEmployee)) {
                         employeeNames[i] = "Updated";
+                        updated = true;
                     }
                 }
-                BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt"));
-                writer.write(String.join(",", employeeNames));
-                writer.close();
+                if (updated) {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt"));
+                    writer.write(String.join(",", employeeNames));
+                    writer.close();
+                    System.out.println("Employee updated.");
+                } else {
+                    System.out.println("Employee not found for update.");
+                }
             } catch (Exception e) {
                 System.out.println("Error updating data.");
             }
         }
-        else if (args[0].contains("d")) {
+        // Check for 'd' (deleting employee)
+        else if (operation.contains("d")) {
+            String employeeToDelete = operation.substring(1);
+            if (employeeToDelete.isEmpty()) {
+                System.out.println("Error: No employee name provided to delete.");
+                return;
+            }
             System.out.println("Deleting employee ...");
-            try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
                 String line = reader.readLine();
                 String[] employeeNames = line.split(",");
-                String employeeToDelete = args[0].substring(1);
                 List<String> list = new ArrayList<>(Arrays.asList(employeeNames));
                 if (list.remove(employeeToDelete)) {
                     BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt"));
                     writer.write(String.join(",", list));
                     writer.close();
+                    System.out.println("Employee deleted.");
                 } else {
                     System.out.println("Employee not found.");
                 }
             } catch (Exception e) {
                 System.out.println("Error deleting employee.");
             }
+        }
+        // If invalid operation is entered
+        else {
+            System.out.println("Error: Invalid argument. Please use one of the following operations: l, s, +<name>, ?<name>, c, u<name>, d<name>");
         }
     }
 

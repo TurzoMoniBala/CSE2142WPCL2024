@@ -132,4 +132,22 @@ public class EmployeeManager {
         }
     }
     }
+    //for read
+    private static String readFile() {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("employees.txt")))) {
+            return reader.readLine();  // Read and return the first line of the file
+        } catch (Exception e) {
+            System.out.println("Error reading file.");
+            return "";
+        }
+    }
+    //for write 
+    private static void writeFile(String content, boolean append) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("employees.txt", append))) {
+            writer.write(content);
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("Error writing to file.");
+        }
+    }
 }

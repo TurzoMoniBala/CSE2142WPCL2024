@@ -5,6 +5,11 @@ import java.util.*;
 public class EmployeeManager {
     public static void main(String[] args) {
         // Check arguments
+        //changing the argument for task 2
+        if (args.length !=1) {
+            System.out.println("error: incrrect number");
+            return;
+        }
         if (args[0].equals("l")) {
             System.out.println("Loading data ...");
             try (
@@ -89,10 +94,10 @@ public class EmployeeManager {
         } 
     }else if (args[0].contains("u")) {
             System.out.println("Loading data ...");
-            try {
+            try (
                 BufferedReader r = new BufferedReader(
                         new InputStreamReader(
-                                new FileInputStream("employees.txt")));
+                                new FileInputStream("employees.txt")))){
                 String l = r.readLine();
                 String e[] = l.split(",");
                 String n = args[0].substring(1);
@@ -105,14 +110,14 @@ public class EmployeeManager {
                         new FileWriter("employees.txt"));
                 w.write(String.join(",", e));
                 w.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
             System.out.println("Data Updated.");
-        } else if (args[0].contains("d")) {
+        } 
+    }else if (args[0].contains("d")) {
             System.out.println("Loading data ...");
-            try {
-                BufferedReader r = new BufferedReader(
-                        new InputStreamReader(
-                                new FileInputStream("employees.txt")));
+            try (
+                BufferedReader r = new BufferedReader ( new InputStreamReader (
+                                new FileInputStream ("employees.txt")))){
                 String l = r.readLine();
                 String e[] = l.split(",");
                 String n = args[0].substring(1);
@@ -122,8 +127,9 @@ public class EmployeeManager {
                         new FileWriter("employees.txt"));
                 w.write(String.join(",", list));
                 w.close();
-            } catch (Exception e) {}
+            } catch (Exception e) {
             System.out.println("Data Deleted.");
         }
+    }
     }
 }
